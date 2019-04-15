@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title><%= title %></title>
+    <!--<link rel='stylesheet' href='/stylesheets/style.css' />-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+
+    <!-- Theme included stylesheets -->
+    <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+</head>
+<body>
+<%- include('nav'); -%>
+
+<div class="container-fluid justify-content-center align-items-center  d-flex h-100">
+    <div class="row h-100 justify-content-center align-items-center ">
+        <div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input class="form-control" id="title" name="title" type="text" placeholder="title">
+            </div>
+            <div class="form-group">
+                <label for="file">image</label>
+                <input type="text" id="file" class="form-control-file" name="image">
+            </div>
+            <!--<div id="toolbar"></div>-->
+
+            <div class="editor" id="editor">
+                <p>Hello World!</p>
+                <p>Some initial <strong>bold</strong> text</p>
+                <p><br></p>
+            </div>
+
+            <button id="sub" class="btn btn-primary">Submit</button>
+
+        </div>
+    </div>
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.4.0.js"
+        integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
+        crossorigin="anonymous"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!--<script src="//cdn.quilljs.com/1.3.6/quill.core.js"></script>-->
+
+<script>
+  var toolbarOptions = [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['blockquote', 'code-block'],
+    [{'header': 1}, {'header': 2}],               // custom button values
+    [{'list': 'ordered'}, {'list': 'bullet'}],
+    [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+    [{'direction': 'rtl'}],                         // text direction
+    [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+    [{'header': [1, 2, 3, 4, 5, 6, false]}],
+    [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+    [{'font': []}],
+    [{'align': []}],
+
+    ['clean']                                         // remove formatting button
+  ];
+  var editor = new Quill('.editor', {
+    modules: {
+      toolbar: toolbarOptions
+      // 'link-tooltip': true
+    },
+    theme: 'snow',
+  });  // First matching element will be used
+  let news_form = document.getElementById('sub')
+  console.log(news_form);
+
+  function push_form() {
+
+    console.log(editor.root.innerHTML);
+    const data =  {
+      "title":  document.getElementById("title").value,
+      "content":   editor.root.innerHTML,
+      "image":   'images/tenor.gif'
+    };
+    console.log(data)
+    axios.post("localhost:3000/news/create", data, {
+      headers: {
+        'Content-Disposition': 'form-data',
+        'Content-Type': 'application/json',
+      }
+    }).then((response) => {
+      console.log("success upload");
+      console.log(response.data);
+    })
+  }
+
+  news_form.addEventListener("click", push_form);
+
+</script>
+</body>
+</html>
