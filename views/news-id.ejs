@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<%- include('head'); -%>
+
+<body>
+<%- include('nav'); -%>
+<%
+var image = news.image == undefined || news.image === "" ? "images/tenor.gif" : news.image.replace("/\\/g", "/").replace('public', '') %>
+<header>
+    <img alt="img-news" src="<%= image %>" class="w-100"/>
+</header>
+<div class="container">
+    <div class="row" >
+        <div class="mb-3 mt-1 mx-auto col-md-12 text-center">
+            <h1 class="text-capitalize">  <%= news.title %></h1>
+        </div>
+        <div>
+            <%- news.content %>
+        </div>
+        <% if (admin === true) {%>
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+            <a href="edit"><button>edit</button></a>
+            <button url="<%= "/" + url + "/delete" %>" id="delete">delete</button>
+            <script>
+              const del = document.getElementById('delete')
+                function deleteNews() {
+                    const url = del.getAttribute('url')
+                    console.log(url)
+                    axios.delete(url, {}, {
+                      withCredentials: true,
+                      headers: {
+
+                        // 'Content-Type': 'application/json',
+                      }}).then(() => {
+                      window.location.replace("/news");
+                    })
+                }
+                del.addEventListener("click", deleteNews)
+            </script>
+        <% }%>
+    </div>
+</div>
+
+</body>
+</html>

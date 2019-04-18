@@ -40,7 +40,7 @@
                 <input type="file" id="file" class="form-control-file" name="file">
             </div>
             <div class="form-group">
-            <label for="image">summary</label>
+            <label for="summary">summary</label>
             <input type="text" id="summary" class="form-control-file" name="summary">
         </div>
             <!--<div id="toolbar"></div>-->
@@ -49,7 +49,7 @@
 
             </div>
 
-            <button id="sub" class="btn btn-primary">Submit</button>
+            <button url=<%= id %> id="sub" class="btn btn-primary">Submit</button>
 
         </div>
     </div>
@@ -104,7 +104,8 @@
     };
     console.log(data)
     console.log(formdata.get('image'))
-    axios.post("http://localhost:3000/news/create", formdata, {
+    const url = "http://localhost:3000/news/" +news_form.getAttribute('url') + '/update';
+    axios.put(url, formdata, {
       withCredentials: true,
       headers: {
         'Content-Disposition': 'form-data',

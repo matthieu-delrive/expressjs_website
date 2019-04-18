@@ -16,6 +16,8 @@ import UsersSchema  from './models/users.models';
 import mongoose from "mongoose";
 
 
+import cors from "cors";
+
 const app = express();
 //Set up default mongoose connection
 let mongoDB = 'mongodb://127.0.0.1/my_database';
@@ -32,6 +34,7 @@ const sess = {
   cookie: {
     expires: 600000
   }};
+app.use(cors());
 app.use(session(sess));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -49,7 +52,6 @@ app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 app.use('/news', newsRouter);
 app.use('/signup', signRouter);
-
 mongoDB = 'mongodb://127.0.0.1/assignment';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -81,8 +83,8 @@ passport.use(new LocalStrategy(
     // logger.debug("lel");
     console.log('Inside local strategy callback');
      let user = UsersSchema.findOne({email: email}, function (err, doc) {
-      console.log(doc.password);
-      console.log(err);
+      // console.log(doc.password);
+      // console.log(err);
       if (err) return done(null, false, { message: 'Invalid credentials db.\n' });
        if (!doc) {
          return done(null, false, { message: 'Invalid credentials.\n' });
@@ -105,7 +107,7 @@ passport.use(new LocalStrategy(
 ));
 passport.serializeUser((user, done) => {
   console.log('Inside serializeUser callback. User id is save to the session file store here');
-  console.log(user);
+  // console.log(user);
   done(null, user._id);
 });
 
