@@ -14,9 +14,9 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import UsersSchema  from './models/users.models';
 //Import the mongoose module
 import mongoose from "mongoose";
-
-
 import cors from "cors";
+
+import bcrypt from "bcrypt-nodejs";
 
 const app = express();
 //Set up default mongoose connection
@@ -89,7 +89,7 @@ passport.use(new LocalStrategy(
        if (!doc) {
          return done(null, false, { message: 'Invalid credentials.\n' });
        }
-       if (password !== doc.password) {
+       if  (!bcrypt.compareSync(password, doc.password)) {
          return done(null, false, { message: 'Invalid credentials.\n' });
        }
        return done(null, doc);

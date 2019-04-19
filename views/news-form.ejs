@@ -30,7 +30,7 @@
 
 <div class="container-fluid justify-content-center align-items-center  d-flex h-100">
     <div class="row h-100 justify-content-center align-items-center ">
-        <div>
+        <div id="news-form">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input class="form-control" id="title" name="title" type="text" placeholder="title">
@@ -117,6 +117,15 @@
       console.log(response.data);
     }).catch((error) => {
       console.log(error)
+      console.log(error)
+      const div = document.getElementById('news-form');
+
+      const alert_failed = document.createElement('div'); // create new textarea
+      alert_failed.innerHTML = '<div class="alert alert-danger" role="alert">'+ error +'</div>';
+      div.parentNode.insertBefore(alert_failed, div.nextSibling);
+      setTimeout(function () {
+        alert_failed.remove()
+      }, 3000);
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx

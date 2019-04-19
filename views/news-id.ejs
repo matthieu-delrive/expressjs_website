@@ -7,14 +7,14 @@
 <%
 var image = news.image == undefined || news.image === "" ? "images/tenor.gif" : news.image.replace("/\\/g", "/").replace('public', '') %>
 <header>
-    <img alt="img-news" src="<%= image %>" class="w-100"/>
+    <img alt="img-news" src="<%= image %>" class="w-100 h-75"/>
 </header>
 <div class="container">
     <div class="row" >
         <div class="mb-3 mt-1 mx-auto col-md-12 text-center">
             <h1 class="text-capitalize">  <%= news.title %></h1>
         </div>
-        <div>
+        <div class="col-md-12 my-3">
             <%- news.content %>
         </div>
         <% if (admin === true) {%>

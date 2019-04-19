@@ -30,7 +30,7 @@
 
 <div class="container-fluid justify-content-center align-items-center  d-flex h-100">
     <div class="row h-100 justify-content-center align-items-center ">
-        <div>
+        <div id="edit-form">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input class="form-control" id="title" name="title" type="text" placeholder="title">
@@ -92,9 +92,13 @@
     let formdata = new FormData();
     let file = document.querySelector('input[type=file]').files[0];
     console.log(formdata);
+    if (file !== undefined && file !== '0')
     formdata.append('file', file, file.fileName);
+    if (document.getElementById("title").value !== "")
     formdata.append('title', document.getElementById("title").value)
+    if (document.getElementById("summary").value !== "")
     formdata.append('summary', document.getElementById("summary").value)
+    if (editor.root.innerHTML !== "" && editor.root.innerHTML  !== "<p><br></p>")
     formdata.append('content', editor.root.innerHTML)
     console.log(editor.root.innerHTML);
     const data =  {
@@ -116,11 +120,23 @@
     }).then((response) => {
       console.log("success upload");
       console.log(response.data);
+      window.location.replace("display");
+
     }).catch((error) => {
       console.log(error)
+      console.log('here')
+      const div = document.getElementById('edit-form');
+
+      const alert_failed = document.createElement('div'); // create new textarea
+      alert_failed.innerHTML = '<div class="alert alert-danger" role="alert">'+ error.response.data +'</div>';
+      div.parentNode.insertBefore(alert_failed, div.nextSibling);
+      setTimeout(function () {
+        alert_failed.remove()
+      }, 3000);
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
+
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
@@ -130,6 +146,7 @@
         // http.ClientRequest in node.js
         console.log(error.request);
       } else {
+
         // Something happened in setting up the request that triggered an Error
         console.log('Error', error.message);
       }
